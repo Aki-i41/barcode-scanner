@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>バーコードスキャナ1</title>
+  <title>バーコードスキャナ</title>
 
   <script src="https://unpkg.com/@zxing/library@latest"></script>
 
@@ -47,7 +47,7 @@
 
 <body>
 
-  <h1>バーコードスキャナ5</h1>
+  <h1>バーコードスキャナ</h1>
 
   <button id="startButton">
     スキャン開始
@@ -64,6 +64,57 @@
   <script>
 
     let lastResult = "";
+
+    function playBeep(){
+
+      try {
+
+        const audioContext =
+          new (window.AudioContext ||
+          window.webkitAudioContext)();
+
+        const oscillator =
+          audioContext.createOscillator();
+
+        const gainNode =
+          audioContext.createGain();
+
+        oscillator.connect(gainNode);
+
+        gainNode.connect(
+          audioContext.destination
+        );
+
+        oscillator.type = "sine";
+
+        oscillator.frequency.value = 1200;
+
+        gainNode.gain.value = 0.05;
+
+        oscillator.start();
+
+        oscillator.stop(
+          audioContext.currentTime + 0.08
+        );
+
+      } catch(e){
+
+        console.log(e);
+
+      }
+    }
+
+    function addResult(text){
+
+      const li =
+        document.createElement("li");
+
+      li.textContent = text;
+
+      document
+        .getElementById("resultList")
+        .prepend(li);
+    }
 
     document
       .getElementById("startButton")
@@ -95,16 +146,16 @@
 
               if(result){
 
-                if(result.text !== lastResult){
+                const cleaned =
+                  result.text.replace(/^A|A$/g, '');
 
-                  lastResult = result.text;
+                if(cleaned !== lastResult){
 
-                  const cleaned =
-  result.text.replace(/^A|A$/g, '');
+                  lastResult = cleaned;
 
-playBeep();
+                  playBeep();
 
-addResult(cleaned);
+                  addResult(cleaned);
 
                 }
               }
@@ -116,54 +167,12 @@ addResult(cleaned);
           console.error(e);
 
           alert(
-            "カメラ起動エラー\nSafariを再起動してください"
+            "カメラ起動エラー"
           );
         }
 
       });
 
-function playBeep(){
-
-  try {
-
-    const audioContext =
-      new (window.AudioContext ||
-      window.webkitAudioContext)();
-
-    const oscillator =
-      audioContext.createOscillator();
-
-    const gainNode =
-      audioContext.createGain();
-
-    oscillator.connect(gainNode);
-
-    gainNode.connect(
-      audioContext.destination
-    );
-
-    oscillator.type = "sine";
-
-    oscillator.frequency.value = 1200;
-
-    gainNode.gain.value = 0.1;
-
-    oscillator.start();
-
-    setTimeout(() => {
-
-      oscillator.stop();
-
-      audioContext.close();
-
-    }, 80);
-
-  } catch(e){
-
-    console.log(e);
-
-  }
-}
   </script>
 
 </body>

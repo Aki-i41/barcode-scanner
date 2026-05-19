@@ -47,7 +47,7 @@
 
 <body>
 
-  <h1>バーコードスキャナ-</h1>
+  <h1>バーコードスキャナ2</h1>
 
   <button id="startButton">
     スキャン開始
@@ -102,6 +102,8 @@
                   const cleaned =
   result.text.replace(/^A|A$/g, '');
 
+playBeep();
+
 addResult(cleaned);
 
                 }
@@ -131,7 +133,15 @@ addResult(cleaned);
         .getElementById("resultList")
         .prepend(li);
     }
+function playBeep(){
 
+  const audio =
+    new Audio(
+      "https://actions.google.com/sounds/v1/cartoon/pop.ogg"
+    );
+
+  audio.play();
+}
   </script>
 
 </body>

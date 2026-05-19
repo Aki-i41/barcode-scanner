@@ -88,8 +88,9 @@
           return;
         }
 
-        const selectedDeviceId =
-          devices[devices.length - 1].deviceId;
+const selectedDeviceId = devices.find(device =>
+  device.label.toLowerCase().includes('back')
+)?.deviceId || devices[0].deviceId;
 
         codeReader.decodeFromVideoDevice(
           selectedDeviceId,

@@ -47,7 +47,7 @@
 
 <body>
 
-  <h1>バーコードスキャナ</h1>
+  <h1>バーコードスキャナ2</h1>
 
   <button id="startButton">
     スキャン開始
@@ -118,16 +118,29 @@
 
     async function sendToSheet(barcode){
 
-      await fetch(
-        "https://script.google.com/macros/s/AKfycbxpz2AkXq9nGIKSLfzQTYCGiYuBHV2_GJmk_30KH9YH_DOTTSrfssfdOptvy2iEdoGZig/exec",
-        {
-          method: "POST",
+      try {
 
-          body: JSON.stringify({
-            barcode: barcode
-          })
-        }
-      );
+        await fetch(
+          "https://script.google.com/macros/s/AKfycbxpz2AkXq9nGIKSLfzQTYCGiYuBHV2_GJmk_30KH9YH_DOTTSrfssfdOptvy2iEdoGZig/exec",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body: JSON.stringify({
+              barcode: barcode
+            })
+          }
+        );
+
+      } catch(e){
+
+        console.log(e);
+
+      }
     }
 
     document

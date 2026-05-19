@@ -47,7 +47,7 @@
 
 <body>
 
-  <h1>バーコードスキャナ</h1>
+  <h1>バーコードスキャナ3</h1>
 
   <button id="startButton">
     スキャン開始
@@ -116,6 +116,20 @@
         .prepend(li);
     }
 
+    async function sendToSheet(barcode){
+
+      await fetch(
+        "https://script.google.com/a/macros/toso-th.info/s/AKfycbwegm3bwNTfWW8eSCbJxiNqIkxBAuolazYrV6IDH3PaGAgzYZ5Pz60d1aQz9wveWBAcZQ/exec",
+        {
+          method: "POST",
+
+          body: JSON.stringify({
+            barcode: barcode
+          })
+        }
+      );
+    }
+
     document
       .getElementById("startButton")
       .addEventListener("click", async () => {
@@ -154,6 +168,8 @@
                   lastResult = cleaned;
 
                   playBeep();
+
+                  sendToSheet(cleaned);
 
                   addResult(cleaned);
 

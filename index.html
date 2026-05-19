@@ -47,7 +47,7 @@
 
 <body>
 
-  <h1>バーコードスキャナ-</h1>
+  <h1>バーコードスキャナ</h1>
 
   <button id="startButton">
     スキャン開始
@@ -116,26 +116,46 @@
         .prepend(li);
     }
 
-    function sendToSheet(barcode){
+  function sendToSheet(barcode){
 
-      const formUrl =
-        "https://docs.google.com/forms/d/e/1FAIpQLScYnzc3JPE9mNZ4vm_wfRfxt4oSdrRiswX8n0S0lx4WlFS3EA/formResponse";
+  const formUrl =
+    "https://docs.google.com/forms/d/e/1FAIpQLScYnzc3JPE9mNZ4vm_wfRfxt4oSdrRiswX8n0S0lx4WlFS3EA/formResponse";
 
-      const formData =
-        new FormData();
+  const iframe =
+    document.createElement("iframe");
 
-      formData.append(
-        "entry.1008386699",
-        barcode
-      );
+  iframe.style.display = "none";
 
-      fetch(formUrl, {
-        method: "POST",
-        mode: "no-cors",
-        body: formData
-      });
-    }
+  document.body.appendChild(iframe);
 
+  const form =
+    document.createElement("form");
+
+  form.method = "POST";
+
+  form.action = formUrl;
+
+  form.target = iframe.name =
+    "hidden_iframe";
+
+  const input =
+    document.createElement("input");
+
+  input.type = "hidden";
+
+  input.name =
+    "entry.1008386699";
+
+  input.value = barcode;
+
+  form.appendChild(input);
+
+  document.body.appendChild(form);
+
+  form.submit();
+
+  form.remove();
+}
     document
       .getElementById("startButton")
       .addEventListener("click", async () => {

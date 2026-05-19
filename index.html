@@ -1,65 +1,295 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0" />
 
-  <title>バーコードスキャナ</title>
+  <title>校内バーコード読取システム</title>
 
   <script src="https://unpkg.com/@zxing/library@latest"></script>
 
   <style>
-    body{
-      font-family:sans-serif;
-      text-align:center;
-      padding:20px;
-      background:#f5f5f5;
+
+    *{
+      box-sizing:border-box;
     }
 
-    button{
+    body{
+      margin:0;
+      font-family:
+        "Hiragino Sans",
+        "Yu Gothic",
+        sans-serif;
+
+      background:
+        linear-gradient(
+          180deg,
+          #e8eef7 0%,
+          #f4f7fb 100%
+        );
+
+      color:#1e293b;
+    }
+
+    /* ===== ヘッダー ===== */
+
+    .header{
+      background:#0f172a;
+      color:white;
+      padding:20px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .header-top{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+
+    .logo{
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      background:white;
+      color:#0f172a;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
       font-size:28px;
-      padding:16px 32px;
+      font-weight:bold;
+    }
+
+    .school-info{
+      text-align:left;
+    }
+
+    .school-name{
+      font-size:14px;
+      opacity:0.8;
+      letter-spacing:1px;
+    }
+
+    .system-name{
+      font-size:28px;
+      font-weight:bold;
+      margin-top:4px;
+    }
+
+    /* ===== メイン ===== */
+
+    .container{
+      width:100%;
+      max-width:700px;
+      margin:0 auto;
+      padding:24px;
+    }
+
+    .card{
+      background:white;
+      border-radius:24px;
+      padding:24px;
+      margin-bottom:24px;
+
+      box-shadow:
+        0 8px 20px rgba(15,23,42,0.08);
+    }
+
+    .section-title{
+      font-size:20px;
+      font-weight:bold;
+      margin-bottom:16px;
+      border-left:6px solid #2563eb;
+      padding-left:12px;
+    }
+
+    /* ===== ボタン ===== */
+
+    button{
+      width:100%;
       border:none;
-      border-radius:16px;
+      border-radius:18px;
+
       background:#2563eb;
       color:white;
-      margin-bottom:20px;
+
+      font-size:28px;
+      font-weight:bold;
+
+      padding:20px;
+
+      cursor:pointer;
+
+      transition:0.2s;
+    }
+
+    button:active{
+      transform:scale(0.98);
+    }
+
+    /* ===== カメラ ===== */
+
+    .video-wrap{
+      background:#0f172a;
+      border-radius:20px;
+      overflow:hidden;
     }
 
     video{
       width:100%;
-      max-width:500px;
-      background:black;
-      border-radius:16px;
+      display:block;
+    }
+
+    /* ===== ステータス ===== */
+
+    .status{
+      margin-top:14px;
+      font-size:18px;
+      color:#475569;
+    }
+
+    .status-dot{
+      display:inline-block;
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      background:#22c55e;
+      margin-right:8px;
+    }
+
+    /* ===== 読み取り一覧 ===== */
+
+    ul{
+      padding:0;
+      margin:0;
     }
 
     li{
       list-style:none;
-      background:white;
-      margin:10px auto;
-      padding:12px;
-      border-radius:10px;
-      max-width:500px;
-      font-size:24px;
+
+      background:#f8fafc;
+
+      margin-bottom:12px;
+
+      padding:18px;
+
+      border-radius:16px;
+
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+
+      border:1px solid #dbeafe;
     }
+
+    .barcode{
+      font-size:26px;
+      font-weight:bold;
+      letter-spacing:1px;
+    }
+
+    .time{
+      font-size:14px;
+      color:#64748b;
+    }
+
+    /* ===== 件数 ===== */
+
+    .count-box{
+      margin-top:16px;
+      text-align:right;
+      font-size:18px;
+      font-weight:bold;
+      color:#2563eb;
+    }
+
   </style>
 </head>
 
 <body>
 
-  <h1>バーコードスキャナ</h1>
+  <!-- ヘッダー -->
 
-  <button id="startButton">
-    スキャン開始
-  </button>
+  <div class="header">
 
-  <br>
+    <div class="header-top">
 
-  <video id="video" autoplay playsinline muted></video>
+      <div class="logo">
+        校
+      </div>
 
-  <h2>読み取り結果</h2>
+      <div class="school-info">
 
-  <ul id="resultList"></ul>
+        <div class="school-name">
+          千葉県立東総工業高等学校
+        </div>
+
+        <div class="system-name">
+          校内バーコード読取システム
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- メイン -->
+
+  <div class="container">
+
+    <!-- スキャン -->
+
+    <div class="card">
+
+      <div class="section-title">
+        バーコード読み取り
+      </div>
+
+      <button id="startButton">
+        スキャン開始
+      </button>
+
+      <br><br>
+
+      <div class="video-wrap">
+        <video
+          id="video"
+          autoplay
+          playsinline
+          muted>
+        </video>
+      </div>
+
+      <div class="status">
+        <span class="status-dot"></span>
+        カメラ待機中
+      </div>
+
+    </div>
+
+    <!-- 結果 -->
+
+    <div class="card">
+
+      <div class="section-title">
+        読み取り履歴
+      </div>
+
+      <ul id="resultList"></ul>
+
+      <div class="count-box">
+        読み取り件数：
+        <span id="count">0</span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- hidden -->
 
   <iframe
     name="hidden_iframe"
@@ -70,13 +300,17 @@
 
     let scannedCodes = [];
 
+    // ===== 音 =====
+
     function playBeep(){
 
-      try {
+      try{
 
         const audioContext =
-          new (window.AudioContext ||
-          window.webkitAudioContext)();
+          new (
+            window.AudioContext ||
+            window.webkitAudioContext
+          )();
 
         const oscillator =
           audioContext.createOscillator();
@@ -102,24 +336,57 @@
           audioContext.currentTime + 0.08
         );
 
-      } catch(e){
+      }catch(e){
 
         console.log(e);
 
       }
     }
 
+    // ===== 時刻 =====
+
+    function getNowTime(){
+
+      const now = new Date();
+
+      return now.toLocaleTimeString(
+        "ja-JP",
+        {
+          hour:"2-digit",
+          minute:"2-digit",
+          second:"2-digit"
+        }
+      );
+    }
+
+    // ===== 結果追加 =====
+
     function addResult(text){
 
       const li =
         document.createElement("li");
 
-      li.textContent = text;
+      li.innerHTML = `
+        <div class="barcode">
+          ${text}
+        </div>
+
+        <div class="time">
+          ${getNowTime()}
+        </div>
+      `;
 
       document
         .getElementById("resultList")
         .prepend(li);
+
+      document
+        .getElementById("count")
+        .textContent =
+        scannedCodes.length;
     }
+
+    // ===== Googleフォーム送信 =====
 
     function sendToSheet(barcode){
 
@@ -152,11 +419,13 @@
       form.remove();
     }
 
+    // ===== スキャン開始 =====
+
     document
       .getElementById("startButton")
       .addEventListener("click", async () => {
 
-        try {
+        try{
 
           const hints = new Map();
 
@@ -171,11 +440,13 @@
             new ZXing.BrowserMultiFormatReader(hints);
 
           codeReader.decodeFromConstraints(
+
             {
-              video: {
-                facingMode: "environment"
+              video:{
+                facingMode:"environment"
               }
             },
+
             "video",
 
             (result, err) => {
@@ -183,9 +454,14 @@
               if(result){
 
                 const cleaned =
-                  result.text.replace(/^A|A$/g, '');
+                  result.text.replace(
+                    /^A|A$/g,
+                    ''
+                  );
 
-                if(!scannedCodes.includes(cleaned)){
+                if(
+                  !scannedCodes.includes(cleaned)
+                ){
 
                   scannedCodes.push(cleaned);
 
@@ -199,7 +475,7 @@
             }
           );
 
-        } catch(e){
+        }catch(e){
 
           console.error(e);
 

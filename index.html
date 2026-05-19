@@ -75,12 +75,15 @@
           facingMode: "environment"
         },
         {
-          fps: 10,
-          qrbox: 250,
-          formatsToSupport: [
-            Html5QrcodeSupportedFormats.CODABAR
-          ]
-        },
+  fps: 20,
+  qrbox: {
+    width: 350,
+    height: 120
+  },
+  formatsToSupport: [
+    Html5QrcodeSupportedFormats.CODABAR
+  ]
+},
 
         (decodedText) => {
 

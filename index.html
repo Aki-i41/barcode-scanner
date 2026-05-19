@@ -47,7 +47,7 @@
 
 <body>
 
-  <h1>バーコードスキャナ</h1>
+  <h1>バーコードスキャナ-</h1>
 
   <button id="startButton">
     スキャン開始
@@ -68,7 +68,7 @@
 
   <script>
 
-    let lastResult = "";
+    let scannedCodes = [];
 
     function playBeep(){
 
@@ -185,16 +185,15 @@
                 const cleaned =
                   result.text.replace(/^A|A$/g, '');
 
-                if(cleaned !== lastResult){
+                if(!scannedCodes.includes(cleaned)){
 
-                  lastResult = cleaned;
+                  scannedCodes.push(cleaned);
 
                   playBeep();
 
                   sendToSheet(cleaned);
 
                   addResult(cleaned);
-
                 }
               }
             }

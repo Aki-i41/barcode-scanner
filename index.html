@@ -47,7 +47,7 @@
 
 <body>
 
-  <h1>バーコードスキャナ-</h1>
+  <h1>バーコードスキャナ</h1>
 
   <button id="startButton">
     スキャン開始
@@ -123,8 +123,10 @@
         + "?barcode="
         + encodeURIComponent(barcode);
 
-      fetch(url);
-
+      fetch(url)
+        .then(response => response.text())
+        .then(data => console.log(data))
+        .catch(error => console.log(error));
     }
 
     document

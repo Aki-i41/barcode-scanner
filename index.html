@@ -47,7 +47,7 @@
 
 <body>
 
-  <h1>バーコードスキャナ-</h1>
+  <h1>バーコードスキャナ</h1>
 
   <button id="startButton">
     スキャン開始
@@ -121,7 +121,9 @@
       const url =
         "https://script.google.com/macros/s/AKfycbxqV0zd4wFm6rZoB97yTy1sM4PTV0ohpzmH4Lf9sA836SqBBS8CGjBmNRAXloDqfQI1-w/exec"
         + "?barcode="
-        + encodeURIComponent(barcode);
+        + encodeURIComponent(barcode)
+        + "&t="
+        + new Date().getTime();
 
       const img = new Image();
 

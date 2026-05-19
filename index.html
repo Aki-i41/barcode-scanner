@@ -47,7 +47,7 @@
 
 <body>
 
-  <h1>バーコードスキャナ3</h1>
+  <h1>バーコードスキャナ5</h1>
 
   <button id="startButton">
     スキャン開始
@@ -122,7 +122,7 @@ addResult(cleaned);
 
       });
 
-   function playBeep(){
+function playBeep(){
 
   try {
 
@@ -144,21 +144,19 @@ addResult(cleaned);
 
     oscillator.type = "sine";
 
-    oscillator.frequency.setValueAtTime(
-      1200,
-      audioContext.currentTime
-    );
+    oscillator.frequency.value = 1200;
 
-    gainNode.gain.setValueAtTime(
-      0.1,
-      audioContext.currentTime
-    );
+    gainNode.gain.value = 0.1;
 
     oscillator.start();
 
-    oscillator.stop(
-      audioContext.currentTime + 0.08
-    );
+    setTimeout(() => {
+
+      oscillator.stop();
+
+      audioContext.close();
+
+    }, 80);
 
   } catch(e){
 

@@ -63,7 +63,6 @@
 
   <script>
 
-    let codeReader;
     let lastResult = "";
 
     document
@@ -81,19 +80,16 @@
             ]
           );
 
-          codeReader =
+          const codeReader =
             new ZXing.BrowserMultiFormatReader(hints);
 
-          const devices =
-            await ZXing.BrowserCodeReader
-              .listVideoInputDevices();
-
-          const selectedDeviceId =
-            devices[0].deviceId;
-
-          codeReader.decodeFromVideoDevice(
-            selectedDeviceId,
-            'video',
+          codeReader.decodeFromConstraints(
+            {
+              video: {
+                facingMode: "environment"
+              }
+            },
+            "video",
 
             (result, err) => {
 
@@ -112,9 +108,11 @@
 
         } catch(e){
 
-          alert("カメラ起動エラー");
-
           console.error(e);
+
+          alert(
+            "カメラ起動エラー\nSafariを再起動してください"
+          );
         }
 
       });

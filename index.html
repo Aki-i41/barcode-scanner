@@ -47,7 +47,7 @@
 
 <body>
 
-  <h1>バーコードスキャナ2</h1>
+  <h1>バーコードスキャナ3</h1>
 
   <button id="startButton">
     スキャン開始
@@ -135,9 +135,35 @@ addResult(cleaned);
     }
 function playBeep(){
 
-  const audio =
-    new Audio(
-      "https://actions.google.com/sounds/v1/cartoon/pop.ogg"
+  const ctx =
+    new (window.AudioContext ||
+      window.webkitAudioContext)();
+
+  const oscillator =
+    ctx.createOscillator();
+
+  const gainNode =
+    ctx.createGain();
+
+  oscillator.connect(gainNode);
+
+  gainNode.connect(ctx.destination);
+
+  oscillator.type = "sine";
+
+  oscillator.frequency.value = 1000;
+
+  oscillator.start();
+
+  gainNode.gain.exponentialRampToValueAtTime(
+    0.00001,
+    ctx.currentTime + 0.15
+  );
+
+  oscillator.stop(
+    ctx.currentTime + 0.15
+  );
+}
     );
 
   audio.play();

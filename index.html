@@ -118,30 +118,38 @@
 
     async function sendToSheet(barcode){
 
-      try {
+  try {
 
-        await fetch(
-          "https://script.google.com/macros/s/AKfycbwG4mBH7_lh1yG4H24XFxhMQsCF3kN9s4juULmeYTPzY3kuN-ytvsIqBv-OBd5XHRA8/exec",
-          {
-            method: "POST",
+    const response =
+      await fetch(
+        "https://script.google.com/macros/s/AKfycbwG4mBH7_lh1yG4H24XFxhMQsCF3kN9s4juULmeYTPzY3kuN-ytvsIqBv-OBd5XHRA8/exec",
+        {
+          method: "POST",
 
-            headers: {
-              "Content-Type":
-                "application/json"
-            },
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
 
-            body: JSON.stringify({
-              barcode: barcode
-            })
-          }
-        );
+          body: JSON.stringify({
+            barcode: barcode
+          })
+        }
+      );
 
-      } catch(e){
+    const text =
+      await response.text();
 
-        console.log(e);
+    console.log(text);
 
-      }
-    }
+  } catch(e){
+
+    console.log(e);
+
+    alert("送信エラー");
+
+  }
+}
 
     document
       .getElementById("startButton")

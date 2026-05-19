@@ -47,7 +47,7 @@
 
 <body>
 
-  <h1>バーコードスキャナ</h1>
+  <h1>バーコードスキャナ-</h1>
 
   <button id="startButton">
     スキャン開始
@@ -116,27 +116,17 @@
         .prepend(li);
     }
 
-  function sendToSheet(barcode){
-
-  const formUrl =
-    "https://docs.google.com/forms/d/e/1FAIpQLScYnzc3JPE9mNZ4vm_wfRfxt4oSdrRiswX8n0S0lx4WlFS3EA/formResponse";
-
-  const iframe =
-    document.createElement("iframe");
-
-  iframe.style.display = "none";
-
-  document.body.appendChild(iframe);
+function sendToSheet(barcode){
 
   const form =
     document.createElement("form");
 
   form.method = "POST";
 
-  form.action = formUrl;
+  form.action =
+    "https://docs.google.com/forms/d/e/1FAIpQLScYnzc3JPE9mNZ4vm_wfRfxt4oSdrRiswX8n0S0lx4WlFS3EA/formResponse";
 
-  form.target = iframe.name =
-    "hidden_iframe";
+  form.target = "_blank";
 
   const input =
     document.createElement("input");
@@ -153,8 +143,6 @@
   document.body.appendChild(form);
 
   form.submit();
-
-  form.remove();
 }
     document
       .getElementById("startButton")

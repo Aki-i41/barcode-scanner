@@ -77,8 +77,17 @@
 
       try {
 
-        codeReader =
-          new ZXing.BrowserMultiFormatReader();
+        const hints = new Map();
+
+hints.set(
+  ZXing.DecodeHintType.POSSIBLE_FORMATS,
+  [
+    ZXing.BarcodeFormat.CODABAR
+  ]
+);
+
+codeReader =
+  new ZXing.BrowserMultiFormatReader(hints);
 
         const devices =
           await codeReader.listVideoInputDevices();

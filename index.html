@@ -116,21 +116,15 @@
         .prepend(li);
     }
 
- function sendToSheet(barcode){
+    function sendToSheet(barcode){
 
-  const url =
-    "https://script.google.com/macros/s/AKfycbwvqgPZfwJT6RFORm-8oRHVMnKCsIFWBDe_-GYXmQuxfWOdsWatd_YGrYh-0OiT9JqTfw/exec"
-    + "?barcode="
-    + encodeURIComponent(barcode);
+      const url =
+        "https://script.google.com/macros/s/AKfycbwvqgPZfwJT6RFORm-8oRHVMnKCsIFWBDe_-GYXmQuxfWOdsWatd_YGrYh-0OiT9JqTfw/exec"
+        + "?barcode="
+        + encodeURIComponent(barcode);
 
-  fetch(url);
- };
+      fetch(url);
 
-      } catch(e){
-
-        console.log(e);
-
-      }
     }
 
     document

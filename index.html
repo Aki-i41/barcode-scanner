@@ -47,7 +47,7 @@
 
 <body>
 
-  <h1>バーコードスキャナ</h1>
+  <h1>バーコードスキャナ-</h1>
 
   <button id="startButton">
     スキャン開始
@@ -116,22 +116,15 @@
         .prepend(li);
     }
 
-    async function sendToSheet(barcode){
+ function sendToSheet(barcode){
 
-      try {
+  const url =
+    "https://script.google.com/macros/s/AKfycbwvqgPZfwJT6RFORm-8oRHVMnKCsIFWBDe_-GYXmQuxfWOdsWatd_YGrYh-0OiT9JqTfw/exec"
+    + "?barcode="
+    + encodeURIComponent(barcode);
 
-        await fetch(
-          "https://script.google.com/macros/s/AKfycbxYFo7Aui6t3fkJhll_RRCWNZoKLvC4lrPcQz83aPACuJYYE0v4kUruVtZ28O6UEyjlJQ/exec",
-          {
-            method: "POST",
-
-            mode: "no-cors",
-
-            body: JSON.stringify({
-              barcode: barcode
-            })
-          }
-        );
+  fetch(url);
+ };
 
       } catch(e){
 

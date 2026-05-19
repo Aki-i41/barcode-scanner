@@ -122,25 +122,49 @@ addResult(cleaned);
 
       });
 
-    function addResult(text){
+   function playBeep(){
 
-      const li =
-        document.createElement("li");
+  try {
 
-      li.textContent = text;
+    const audioContext =
+      new (window.AudioContext ||
+      window.webkitAudioContext)();
 
-      document
-        .getElementById("resultList")
-        .prepend(li);
-    }
-function playBeep(){
+    const oscillator =
+      audioContext.createOscillator();
 
-  const audio =
-    new Audio(
-      "https://actions.google.com/sounds/v1/cartoon/pop.ogg"
+    const gainNode =
+      audioContext.createGain();
+
+    oscillator.connect(gainNode);
+
+    gainNode.connect(
+      audioContext.destination
     );
 
-  audio.play();
+    oscillator.type = "sine";
+
+    oscillator.frequency.setValueAtTime(
+      1200,
+      audioContext.currentTime
+    );
+
+    gainNode.gain.setValueAtTime(
+      0.1,
+      audioContext.currentTime
+    );
+
+    oscillator.start();
+
+    oscillator.stop(
+      audioContext.currentTime + 0.08
+    );
+
+  } catch(e){
+
+    console.log(e);
+
+  }
 }
   </script>
 

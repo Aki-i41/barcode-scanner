@@ -1,9 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+東総工業 スキャンモニター
+</title>
+
+<style>
+
+body{
+
+  margin:0;
+  overflow:hidden;
+  background:black;
+}
+
+#screen{
+
+  width:100vw;
+  height:100vh;
+
+  object-fit:cover;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<img
+  id="screen"
+  src="https://raw.githubusercontent.com/Aki-i41/barcode-scanner/main/waiting.png">
+
 <script>
 
 const CSV_URL =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vQyPsj6PrjzSwNXFTcEOeIzBBErf9wG0GD_X5im71AOkixqDNQVNTLqXOtSNL5sNFyXfpgv71Pr8QHt/pub?output=csv";
 
-let lastTimestamp = "";
+let lastTimestamp = null;
+
+let isFirstLoad = true;
+
+let isShowing = false;
 
 async function checkBarcode(){
 
@@ -13,7 +58,10 @@ async function checkBarcode(){
       await fetch(
         CSV_URL +
         "&t=" +
-        Date.now()
+        Date.now(),
+        {
+          cache:"no-store"
+        }
       );
 
     const text =
@@ -31,9 +79,22 @@ async function checkBarcode(){
     const timestamp =
       values[0];
 
+    // 初回読み込みは反応しない
+    if(isFirstLoad){
+
+      lastTimestamp =
+        timestamp;
+
+      isFirstLoad = false;
+
+      return;
+    }
+
+    // 新しい送信だけ反応
     if(
       timestamp &&
-      timestamp != lastTimestamp
+      timestamp != lastTimestamp &&
+      !isShowing
     ){
 
       lastTimestamp =
@@ -51,17 +112,21 @@ async function checkBarcode(){
 
 function showComplete(){
 
+  isShowing = true;
+
   document
     .getElementById("screen")
     .src =
-    "complete.png";
+    "https://raw.githubusercontent.com/Aki-i41/barcode-scanner/main/complete.png";
 
   setTimeout(() => {
 
     document
       .getElementById("screen")
       .src =
-      "waiting.png";
+      "https://raw.githubusercontent.com/Aki-i41/barcode-scanner/main/waiting.png";
+
+    isShowing = false;
 
   }, 5000);
 }
@@ -70,7 +135,10 @@ checkBarcode();
 
 setInterval(
   checkBarcode,
-  500
+  1000
 );
 
 </script>
+
+</body>
+</html>

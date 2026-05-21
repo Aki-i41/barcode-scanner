@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0">
 
@@ -10,12 +12,17 @@
 <style>
 
 body{
+
   margin:0;
+
   height:100vh;
 
   display:flex;
+
   justify-content:center;
+
   align-items:center;
+
   flex-direction:column;
 
   background:#7b1e3a;
@@ -30,18 +37,23 @@ body{
 }
 
 .status{
-  font-size:36px;
-  margin-bottom:20px;
+
+  font-size:42px;
+
+  margin-bottom:30px;
 }
 
 .barcode{
+
   font-size:96px;
+
   font-weight:bold;
 
   background:white;
+
   color:#111;
 
-  padding:30px 50px;
+  padding:40px 70px;
 
   border-radius:24px;
 
@@ -49,17 +61,20 @@ body{
 }
 
 .time{
+
   margin-top:30px;
+
   font-size:28px;
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="status">
-  バーコードを読み取りました1
+  バーコードを読み取りました
 </div>
 
 <div
@@ -79,50 +94,25 @@ body{
 <script>
 
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbwwPJCiAlec3_huaoXbTGkyz0lSIklynwh6YGX1zDZH6kN5D1uXP_SjqfpfuqwwTpYHOQ/exec";
+"https://script.google.com/macros/s/AKfycbwwPJCiAlec3_huaoXbTGkyz0lSIklynwh6YGX1zDZH6kN5D1uXP_SjqfpfuqwwTpYHOQ/exec";
 
 let lastBarcode = "";
-
-function playBeep(){
-
-  const audioContext =
-    new (
-      window.AudioContext ||
-      window.webkitAudioContext
-    )();
-
-  const oscillator =
-    audioContext.createOscillator();
-
-  const gainNode =
-    audioContext.createGain();
-
-  oscillator.connect(gainNode);
-
-  gainNode.connect(
-    audioContext.destination
-  );
-
-  oscillator.frequency.value = 1200;
-
-  gainNode.gain.value = 0.05;
-
-  oscillator.start();
-
-  oscillator.stop(
-    audioContext.currentTime + 0.15
-  );
-}
 
 async function checkBarcode(){
 
   try{
 
     const response =
-      await fetch(API_URL);
+      await fetch(
+        API_URL +
+        "?t=" +
+        Date.now()
+      );
 
     const data =
       await response.json();
+
+    console.log(data);
 
     if(
       data.barcode &&
@@ -143,7 +133,6 @@ async function checkBarcode(){
         new Date()
         .toLocaleTimeString();
 
-      playBeep();
     }
 
   }catch(e){
@@ -152,6 +141,8 @@ async function checkBarcode(){
 
   }
 }
+
+checkBarcode();
 
 setInterval(
   checkBarcode,

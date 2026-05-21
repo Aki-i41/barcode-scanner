@@ -1,67 +1,9 @@
-<script>
+<!DOCTYPE html>
+<html lang="ja">
 
-const API_URL =
-"https://script.google.com/macros/s/AKfycbwwPJCiAlec3_huaoXbTGkyz0lSIklynwh6YGX1zDZH6kN5D1uXP_SjqfpfuqwwTpYHOQ/exec";
+<head>
 
-let lastBarcode = "";
+<meta charset="UTF-8">
 
-async function checkBarcode(){
-
-  try{
-
-    const response =
-      await fetch(
-        API_URL,
-        {
-          method:"GET",
-          mode:"cors"
-        }
-      );
-
-    const text =
-      await response.text();
-
-    const data =
-      JSON.parse(text);
-
-    console.log(data);
-
-    if(
-      data.barcode &&
-      data.barcode != lastBarcode
-    ){
-
-      lastBarcode =
-        data.barcode;
-
-      document
-        .getElementById("barcode")
-        .textContent =
-        data.barcode;
-
-      document
-        .getElementById("time")
-        .textContent =
-        new Date()
-        .toLocaleTimeString();
-
-    }
-
-  }catch(e){
-
-    console.log(
-      "エラー",
-      e
-    );
-
-  }
-}
-
-checkBarcode();
-
-setInterval(
-  checkBarcode,
-  2000
-);
-
-</script>
+<meta name="viewport"
+content="width=device-width

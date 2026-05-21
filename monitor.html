@@ -1,48 +1,9 @@
-<!DOCTYPE html>
-<html lang="ja">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>東総工業 スキャンモニター</title>
-
-<style>
-
-body{
-
-  margin:0;
-  overflow:hidden;
-  background:black;
-}
-
-#screen{
-
-  width:100vw;
-  height:100vh;
-
-  object-fit:cover;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<img
-  id="screen"
-  src="waiting.png">
-
 <script>
 
 const CSV_URL =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vQyPsj6PrjzSwNXFTcEOeIzBBErf9wG0GD_X5im71AOkixqDNQVNTLqXOtSNL5sNFyXfpgv71Pr8QHt/pub?output=csv";
 
-let lastBarcode = "";
+let lastTimestamp = "";
 
 async function checkBarcode(){
 
@@ -67,16 +28,16 @@ async function checkBarcode(){
     const values =
       lastLine.split(",");
 
-    const barcode =
-      values[1];
+    const timestamp =
+      values[0];
 
     if(
-      barcode &&
-      barcode != lastBarcode
+      timestamp &&
+      timestamp != lastTimestamp
     ){
 
-      lastBarcode =
-        barcode;
+      lastTimestamp =
+        timestamp;
 
       showComplete();
     }
@@ -102,17 +63,14 @@ function showComplete(){
       .src =
       "waiting.png";
 
-  }, 3000);
+  }, 5000);
 }
 
 checkBarcode();
 
 setInterval(
   checkBarcode,
-  2000
+  500
 );
 
 </script>
-
-</body>
-</html>

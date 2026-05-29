@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0" />
+
+  <title>校内バーコード読取システム</title>
+
+  <script src="https://unpkg.com/@zxing/library@latest"></script>
+
+  <style>
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      font-family:
+        "Hiragino Sans",
+        "Yu Gothic",
+        sans-serif;
+
+      background:
+        linear-gradient(
+          180deg,
+          #e8eef7 0%,
+          #f4f7fb 100%
+        );
+
+      color:#1e293b;
+    }
+
+    /* ===== ヘッダー ===== */
+
+    .header{
+  background:#7b1e3a;
+  color:white;
+  padding:20px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.15);
+}
+
+    .header-top{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+
+    .logo{
+  width:56px;
+  height:56px;
+
+  background:#FFFDF1;
+
+  border-radius:50%;
+
+  overflow:hidden;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.logo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+    .school-info{
+      text-align:left;
+    }
+
+    .school-name{
+  font-size:20px;
+  opacity:0.95;
+  letter-spacing:1px;
+  color:#FFFDF1;
+}
+
+.system-name{
+  font-size:28px;
+  font-weight:bold;
+  margin-top:4px;
+  color:#FFFDF1;
+}
+
+    /* ===== メイン ===== */
+
+    .container{
+      width:100%;
+      max-width:700px;
+      margin:0 auto;
+      padding:24px;
+    }
+
+    .card{
+      background:#FFFDF1;
+      border-radius:24px;
+      padding:24px;
+      margin-bottom:24px;
+
+      box-shadow:
+        0 8px 20px rgba(15,23,42,0.08);
+    }
+
+    .section-title{
+      font-size:20px;
+      font-weight:bold;
+      margin-bottom:16px;
+      border-left:6px solid #7b1e3a;
+      padding-left:12px;
+    }
+
+    /* ===== ボタン ===== */
+
+    button{
+      width:100%;
+      border:none;
+      border-radius:18px;
+
+      background:#7b1e3a;
+      color:#FFFDF1;
+
+      font-size:28px;
+      font-weight:bold;
+
+      padding:20px;
+
+      cursor:pointer;
+
+      transition:0.2s;
+    }
+
+    button:active{
+      transform:scale(0.98);
+    }
+
+    /* ===== カメラ ===== */
+
+    .video-wrap{
+      background:#0f172a;
+      border-radius:20px;
+      overflow:hidden;
+    }
+
+    video{
+      width:100%;
+      display:block;
+    }
+
+    /* ===== ステータス ===== */
+
+    .status{
+      margin-top:14px;
+      font-size:18px;
+      color:#475569;
+    }
+
+    .status-dot{
+      display:inline-block;
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      background:#22c55e;
+      margin-right:8px;
+    }
+
+    /* ===== 読み取り一覧 ===== */
+
+    ul{
+      padding:0;
+      margin:0;
+    }
+
+    li{
+      list-style:none;
+
+      background:#f8fafc;
+
+      margin-bottom:12px;
+
+      padding:18px;
+
+      border-radius:16px;
+
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+
+      border:1px solid #dbeafe;
+    }
+
+    .barcode{
+      font-size:26px;
+      font-weight:bold;
+      letter-spacing:1px;
+    }
+
+    .time{
+      font-size:14px;
+      color:#64748b;
+    }
+
+    /* ===== 件数 ===== */
+
+    .count-box{
+      margin-top:16px;
+      text-align:right;
+      font-size:18px;
+      font-weight:bold;
+      color:#7b1e3a;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ヘッダー -->
+
+  <div class="header">
+
+    <div class="header-top">
+
+      <div class="logo">
+  <img src="logo.jpg" alt="校章">
+</div>
+
+      <div class="school-info">
+
+        <div class="school-name">
+          千葉県立東総工業高等学校
+        </div>
+
+        <div class="system-name">
+          校内バーコード読取システム
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- メイン -->
+
+  <div class="container">
+
+    <!-- スキャン -->
+
+    <div class="card">
+
+      <div class="section-title">
+        バーコード読み取り
+      </div>
+
+      <button id="startButton">
+        スキャン開始
+      </button>
+
+      <br><br>
+
+      <div class="video-wrap">
+        <video
+          id="video"
+          autoplay
+          playsinline
+          muted>
+        </video>
+      </div>
+
+      <div class="status">
+        <span class="status-dot"></span>
+        カメラ待機中
+      </div>
+
+    </div>
+
+    <!-- 結果 -->
+
+    <div class="card">
+
+      <div class="section-title">
+        読み取り履歴
+      </div>
+
+      <ul id="resultList"></ul>
+
+      <div class="count-box">
+        読み取り件数：
+        <span id="count">0</span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- hidden -->
+
+  <iframe
+    name="hidden_iframe"
+    style="display:none;">
+  </iframe>
+
+  <script>
+
+    let scannedCodes = [];
+
+    // ===== 音 =====
+
+    function playBeep(){
+
+      try{
+
+        const audioContext =
+          new (
+            window.AudioContext ||
+            window.webkitAudioContext
+          )();
+
+        const oscillator =
+          audioContext.createOscillator();
+
+        const gainNode =
+          audioContext.createGain();
+
+        oscillator.connect(gainNode);
+
+        gainNode.connect(
+          audioContext.destination
+        );
+
+        oscillator.type = "sine";
+
+        oscillator.frequency.value = 1200;
+
+        gainNode.gain.value = 0.05;
+
+        oscillator.start();
+
+        oscillator.stop(
+          audioContext.currentTime + 0.08
+        );
+
+      }catch(e){
+
+        console.log(e);
+
+      }
+    }
+
+    // ===== 時刻 =====
+
+    function getNowTime(){
+
+      const now = new Date();
+
+      return now.toLocaleTimeString(
+        "ja-JP",
+        {
+          hour:"2-digit",
+          minute:"2-digit",
+          second:"2-digit"
+        }
+      );
+    }
+
+    // ===== 結果追加 =====
+
+    function addResult(text){
+
+      const li =
+        document.createElement("li");
+
+      li.innerHTML = `
+        <div class="barcode">
+          ${text}
+        </div>
+
+        <div class="time">
+          ${getNowTime()}
+        </div>
+      `;
+
+      document
+        .getElementById("resultList")
+        .prepend(li);
+
+      document
+        .getElementById("count")
+        .textContent =
+        scannedCodes.length;
+    }
+
+    // ===== Googleフォーム送信 =====
+
+    function sendToSheet(barcode){
+
+      const form =
+        document.createElement("form");
+
+      form.method = "POST";
+
+      form.action =
+        "https://docs.google.com/forms/u/0/d/e/1FAIpQLSdSfNHgMHJt51rNwmGTo4XMqEmiGD0W2B16o46Ep0n7qiXjyQ/formResponse";
+
+　　　form.target = "hidden_iframe";
+
+      const input =
+        document.createElement("input");
+
+      input.type = "hidden";
+
+      input.name =
+        "entry.1324494010";
+
+      input.value = barcode;
+
+      form.appendChild(input);
+
+      document.body.appendChild(form);
+
+      form.submit();
+
+      form.remove();
+    }
+
+    // ===== スキャン開始 =====
+
+    document
+      .getElementById("startButton")
+      .addEventListener("click", async () => {
+
+        try{
+
+          const hints = new Map();
+
+          hints.set(
+            ZXing.DecodeHintType.POSSIBLE_FORMATS,
+            [
+              ZXing.BarcodeFormat.CODABAR
+            ]
+          );
+
+          const codeReader =
+            new ZXing.BrowserMultiFormatReader(hints);
+
+          codeReader.decodeFromConstraints(
+
+            {
+              video:{
+                facingMode:"environment"
+              }
+            },
+
+            "video",
+
+            (result, err) => {
+
+              if(result){
+
+                const cleaned =
+                  result.text.replace(
+                    /^A|A$/g,
+                    ''
+                  );
+
+                if(
+                  !scannedCodes.includes(cleaned)
+                ){
+
+                  scannedCodes.push(cleaned);
+
+                  playBeep();
+
+                  sendToSheet(cleaned);
+
+                  addResult(cleaned);
+                }
+              }
+            }
+          );
+
+        }catch(e){
+
+          console.error(e);
+
+          alert(
+            "カメラ起動エラー"
+          );
+        }
+
+      });
+
+  </script>
+
+</body>
+</html>

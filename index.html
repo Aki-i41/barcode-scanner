@@ -168,7 +168,8 @@
       background:#22c55e;
       margin-right:8px;
     }
-   /* ===== 最新表示 ===== */
+
+    /* ===== 最新表示 ===== */
 
     .big-result{
 
@@ -193,6 +194,7 @@
       box-shadow:
         0 8px 20px rgba(0,0,0,0.15);
     }
+
     /* ===== カメラ中央表示 ===== */
 
     .scan-overlay{
@@ -453,6 +455,11 @@
 
     function addResult(text){
 
+      // 下の超デカ表示
+
+      document
+        .getElementById("latestResult")
+        .textContent = text;
 
       // カメラ中央表示
 

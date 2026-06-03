@@ -35,11 +35,11 @@
     /* ===== ヘッダー ===== */
 
     .header{
-  background:#7b1e3a;
-  color:white;
-  padding:20px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.15);
-}
+      background:#7b1e3a;
+      color:white;
+      padding:20px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.15);
+    }
 
     .header-top{
       display:flex;
@@ -48,51 +48,76 @@
     }
 
     .logo{
-  width:56px;
-  height:56px;
+      width:56px;
+      height:56px;
 
-  background:#FFFDF1;
+      background:#FFFDF1;
 
-  border-radius:50%;
+      border-radius:50%;
 
-  overflow:hidden;
+      overflow:hidden;
 
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
 
-.logo img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
+    .logo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
 
     .school-info{
       text-align:left;
     }
 
     .school-name{
-  font-size:20px;
-  opacity:0.95;
-  letter-spacing:1px;
-  color:#FFFDF1;
-}
+      font-size:20px;
+      opacity:0.95;
+      letter-spacing:1px;
+      color:#FFFDF1;
+    }
 
-.system-name{
-  font-size:28px;
-  font-weight:bold;
-  margin-top:4px;
-  color:#FFFDF1;
-}
+    .system-name{
+      font-size:28px;
+      font-weight:bold;
+      margin-top:4px;
+      color:#FFFDF1;
+    }
 
     /* ===== メイン ===== */
 
     .container{
       width:100%;
-      max-width:700px;
+      max-width:1400px;
       margin:0 auto;
       padding:24px;
+    }
+
+    /* ===== 上段レイアウト ===== */
+
+    .top-layout{
+
+      display:flex;
+
+      gap:24px;
+
+      align-items:stretch;
+
+      margin-bottom:24px;
+    }
+
+    .scan-card{
+      flex:2;
+    }
+
+    .latest-card{
+      flex:1;
+
+      display:flex;
+
+      flex-direction:column;
     }
 
     .card{
@@ -140,6 +165,8 @@
     /* ===== カメラ ===== */
 
     .video-wrap{
+      position:relative;
+
       background:#0f172a;
       border-radius:20px;
       overflow:hidden;
@@ -165,6 +192,37 @@
       border-radius:50%;
       background:#22c55e;
       margin-right:8px;
+    }
+
+    /* ===== 最新表示 ===== */
+
+    .latest-big{
+
+      flex:1;
+
+      display:flex;
+
+      align-items:center;
+
+      justify-content:center;
+
+      background:#7b1e3a;
+
+      color:#FFFDF1;
+
+      border-radius:24px;
+
+      font-size:72px;
+
+      font-weight:bold;
+
+      text-align:center;
+
+      padding:20px;
+
+      word-break:break-all;
+
+      letter-spacing:3px;
     }
 
     /* ===== 読み取り一覧 ===== */
@@ -212,67 +270,55 @@
       font-weight:bold;
       color:#7b1e3a;
     }
-    
- /* ===== 全画面表示 ===== */
-    .big-result{
 
-  background:#7b1e3a;
+    /* ===== オーバーレイ ===== */
 
-  color:#FFFDF1;
+    .scan-overlay{
 
-  font-size:72px;
+      position:absolute;
 
-  font-weight:bold;
+      top:50%;
+      left:50%;
 
-  text-align:center;
+      transform:translate(-50%, -50%);
 
-  padding:30px;
+      background:rgba(123,30,58,0.92);
 
-  border-radius:24px;
+      color:#FFFDF1;
 
-  margin-bottom:24px;
+      font-size:72px;
 
-  letter-spacing:3px;
+      font-weight:bold;
 
-  box-shadow:
-    0 8px 20px rgba(0,0,0,0.15);
-}
-    
-/* ===== 全画面表示２ ===== */
-    .video-wrap{
-  position:relative;
-}
+      padding:24px 40px;
 
-.scan-overlay{
+      border-radius:24px;
 
-  position:absolute;
+      letter-spacing:3px;
 
-  top:50%;
-  left:50%;
+      display:none;
 
-  transform:translate(-50%, -50%);
+      z-index:10;
 
-  background:rgba(123,30,58,0.92);
+      box-shadow:
+        0 8px 20px rgba(0,0,0,0.3);
+    }
 
-  color:#FFFDF1;
+    /* ===== レスポンシブ ===== */
 
-  font-size:72px;
+    @media (max-width: 900px){
 
-  font-weight:bold;
+      .top-layout{
 
-  padding:24px 40px;
+        flex-direction:column;
+      }
 
-  border-radius:24px;
+      .latest-big{
 
-  letter-spacing:3px;
+        font-size:48px;
+      }
+    }
 
-  display:none;
-
-  z-index:10;
-
-  box-shadow:
-    0 8px 20px rgba(0,0,0,0.3);
-}
   </style>
 </head>
 
@@ -285,13 +331,13 @@
     <div class="header-top">
 
       <div class="logo">
-  <img src="logo.jpg" alt="校章">
-</div>
+        <img src="logo.jpg" alt="校章">
+      </div>
 
       <div class="school-info">
 
         <div class="school-name">
-          千葉県立東総工業高等学校
+          千葉県立東総工業高等学校1
         </div>
 
         <div class="system-name">
@@ -308,62 +354,78 @@
 
   <div class="container">
 
-    <!-- スキャン -->
+    <div class="top-layout">
 
-    <div class="card">
+      <!-- スキャン -->
 
-      <div class="section-title">
-        バーコード読み取り
+      <div class="card scan-card">
+
+        <div class="section-title">
+          バーコード読み取り
+        </div>
+
+        <button id="startButton">
+          スキャン開始
+        </button>
+
+        <br><br>
+
+        <div class="video-wrap">
+
+          <video
+            id="video"
+            autoplay
+            playsinline
+            muted>
+          </video>
+
+          <div id="scanOverlay" class="scan-overlay">
+            ---
+          </div>
+
+        </div>
+
+        <div class="status">
+          <span class="status-dot"></span>
+          カメラ待機中
+        </div>
+
       </div>
 
-      <button id="startButton">
-        スキャン開始
-      </button>
+      <!-- 最新読み取り -->
 
-      <br><br>
+      <div class="card latest-card">
 
-      <div class="video-wrap">
+        <div class="section-title">
+          最新の読み取り値
+        </div>
 
-  <video
-    id="video"
-    autoplay
-    playsinline
-    muted>
-  </video>
+        <div id="latestResult" class="latest-big">
+          ---
+        </div>
 
-  <div id="scanOverlay" class="scan-overlay">
-    ---
-  </div>
-
-</div>
-
-      <div class="status">
-        <span class="status-dot"></span>
-        カメラ待機中
       </div>
 
     </div>
 
-    <!-- 結果 -->
+    <!-- 履歴 -->
 
     <div class="card">
 
-  <div class="section-title">
-    読み取り履歴
+      <div class="section-title">
+        読み取り履歴
+      </div>
+
+      <ul id="resultList"></ul>
+
+      <div class="count-box">
+        読み取り件数：
+        <span id="count">0</span>
+      </div>
+
+    </div>
+
   </div>
-
-  <div id="latestResult" class="big-result">
-    ---
-  </div>
-
-  <ul id="resultList"></ul>
-
-  <div class="count-box">
-    読み取り件数：
-    <span id="count">0</span>
-  </div>
-
-</div>
 
   <!-- hidden -->
 
@@ -439,22 +501,41 @@
 
     function addResult(text){
 
-  document
-    .getElementById("latestResult")
-    .textContent = text;
+      // 右側の最新表示
 
-  const li =
-    document.createElement("li");
+      document
+        .getElementById("latestResult")
+        .textContent = text;
 
-  li.innerHTML = `
-    <div class="barcode">
-      ${text}
-    </div>
+      // カメラ中央表示
 
-    <div class="time">
-      ${getNowTime()}
-    </div>
-  `;
+      const overlay =
+        document.getElementById("scanOverlay");
+
+      overlay.textContent = text;
+
+      overlay.style.display = "block";
+
+      setTimeout(() => {
+
+        overlay.style.display = "none";
+
+      }, 1500);
+
+      // 履歴追加
+
+      const li =
+        document.createElement("li");
+
+      li.innerHTML = `
+        <div class="barcode">
+          ${text}
+        </div>
+
+        <div class="time">
+          ${getNowTime()}
+        </div>
+      `;
 
       document
         .getElementById("resultList")
@@ -533,11 +614,11 @@
 
               if(result){
 
-               const cleaned =
-  result.text.replace(
-    /^[A-Z]|[A-Z]$/g,
-    ''
-  );
+                const cleaned =
+                  result.text.replace(
+                    /^[A-Z]|[A-Z]$/g,
+                    ''
+                  );
 
                 if(
                   !scannedCodes.includes(cleaned)

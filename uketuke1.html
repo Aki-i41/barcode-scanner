@@ -35,11 +35,11 @@
     /* ===== ヘッダー ===== */
 
     .header{
-  background:#7b1e3a;
-  color:white;
-  padding:20px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.15);
-}
+      background:#7b1e3a;
+      color:white;
+      padding:20px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.15);
+    }
 
     .header-top{
       display:flex;
@@ -48,43 +48,43 @@
     }
 
     .logo{
-  width:56px;
-  height:56px;
+      width:56px;
+      height:56px;
 
-  background:#FFFDF1;
+      background:#FFFDF1;
 
-  border-radius:50%;
+      border-radius:50%;
 
-  overflow:hidden;
+      overflow:hidden;
 
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
 
-.logo img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
+    .logo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
 
     .school-info{
       text-align:left;
     }
 
     .school-name{
-  font-size:20px;
-  opacity:0.95;
-  letter-spacing:1px;
-  color:#FFFDF1;
-}
+      font-size:20px;
+      opacity:0.95;
+      letter-spacing:1px;
+      color:#FFFDF1;
+    }
 
-.system-name{
-  font-size:28px;
-  font-weight:bold;
-  margin-top:4px;
-  color:#FFFDF1;
-}
+    .system-name{
+      font-size:28px;
+      font-weight:bold;
+      margin-top:4px;
+      color:#FFFDF1;
+    }
 
     /* ===== メイン ===== */
 
@@ -140,6 +140,8 @@
     /* ===== カメラ ===== */
 
     .video-wrap{
+      position:relative;
+
       background:#0f172a;
       border-radius:20px;
       overflow:hidden;
@@ -165,6 +167,39 @@
       border-radius:50%;
       background:#22c55e;
       margin-right:8px;
+    }
+
+    /* ===== カメラ中央表示 ===== */
+
+    .scan-overlay{
+
+      position:absolute;
+
+      top:50%;
+      left:50%;
+
+      transform:translate(-50%, -50%);
+
+      background:rgba(123,30,58,0.92);
+
+      color:#FFFDF1;
+
+      font-size:72px;
+
+      font-weight:bold;
+
+      padding:24px 40px;
+
+      border-radius:24px;
+
+      letter-spacing:3px;
+
+      display:none;
+
+      z-index:10;
+
+      box-shadow:
+        0 8px 20px rgba(0,0,0,0.3);
     }
 
     /* ===== 読み取り一覧 ===== */
@@ -213,6 +248,15 @@
       color:#7b1e3a;
     }
 
+    /* ===== スマホ対応 ===== */
+
+    @media (max-width: 900px){
+
+      .scan-overlay{
+        font-size:48px;
+      }
+    }
+
   </style>
 </head>
 
@@ -225,8 +269,8 @@
     <div class="header-top">
 
       <div class="logo">
-  <img src="logo.jpg" alt="校章">
-</div>
+        <img src="logo.jpg" alt="校章">
+      </div>
 
       <div class="school-info">
 
@@ -263,12 +307,18 @@
       <br><br>
 
       <div class="video-wrap">
+
         <video
           id="video"
           autoplay
           playsinline
           muted>
         </video>
+
+        <div id="scanOverlay" class="scan-overlay">
+          ---
+        </div>
+
       </div>
 
       <div class="status">
@@ -278,7 +328,7 @@
 
     </div>
 
-    <!-- 結果 -->
+    <!-- 履歴 -->
 
     <div class="card">
 
@@ -370,6 +420,23 @@
     // ===== 結果追加 =====
 
     function addResult(text){
+
+      // カメラ中央表示
+
+      const overlay =
+        document.getElementById("scanOverlay");
+
+      overlay.textContent = text;
+
+      overlay.style.display = "block";
+
+      setTimeout(() => {
+
+        overlay.style.display = "none";
+
+      }, 1500);
+
+      // 履歴追加
 
       const li =
         document.createElement("li");
@@ -463,7 +530,7 @@
 
                 const cleaned =
                   result.text.replace(
-                    /^A|A$/g,
+                    /^[A-Z]|[A-Z]$/g,
                     ''
                   );
 

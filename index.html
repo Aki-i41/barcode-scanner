@@ -90,34 +90,9 @@
 
     .container{
       width:100%;
-      max-width:1400px;
+      max-width:700px;
       margin:0 auto;
       padding:24px;
-    }
-
-    /* ===== 上段レイアウト ===== */
-
-    .top-layout{
-
-      display:flex;
-
-      gap:24px;
-
-      align-items:stretch;
-
-      margin-bottom:24px;
-    }
-
-    .scan-card{
-      flex:2;
-    }
-
-    .latest-card{
-      flex:1;
-
-      display:flex;
-
-      flex-direction:column;
     }
 
     .card{
@@ -196,21 +171,11 @@
 
     /* ===== 最新表示 ===== */
 
-    .latest-big{
-
-      flex:1;
-
-      display:flex;
-
-      align-items:center;
-
-      justify-content:center;
+    .big-result{
 
       background:#7b1e3a;
 
       color:#FFFDF1;
-
-      border-radius:24px;
 
       font-size:72px;
 
@@ -218,11 +183,49 @@
 
       text-align:center;
 
-      padding:20px;
+      padding:30px;
 
-      word-break:break-all;
+      border-radius:24px;
+
+      margin-bottom:24px;
 
       letter-spacing:3px;
+
+      box-shadow:
+        0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    /* ===== カメラ中央表示 ===== */
+
+    .scan-overlay{
+
+      position:absolute;
+
+      top:50%;
+      left:50%;
+
+      transform:translate(-50%, -50%);
+
+      background:rgba(123,30,58,0.92);
+
+      color:#FFFDF1;
+
+      font-size:72px;
+
+      font-weight:bold;
+
+      padding:24px 40px;
+
+      border-radius:24px;
+
+      letter-spacing:3px;
+
+      display:none;
+
+      z-index:10;
+
+      box-shadow:
+        0 8px 20px rgba(0,0,0,0.3);
     }
 
     /* ===== 読み取り一覧 ===== */
@@ -271,50 +274,15 @@
       color:#7b1e3a;
     }
 
-    /* ===== オーバーレイ ===== */
-
-    .scan-overlay{
-
-      position:absolute;
-
-      top:50%;
-      left:50%;
-
-      transform:translate(-50%, -50%);
-
-      background:rgba(123,30,58,0.92);
-
-      color:#FFFDF1;
-
-      font-size:72px;
-
-      font-weight:bold;
-
-      padding:24px 40px;
-
-      border-radius:24px;
-
-      letter-spacing:3px;
-
-      display:none;
-
-      z-index:10;
-
-      box-shadow:
-        0 8px 20px rgba(0,0,0,0.3);
-    }
-
-    /* ===== レスポンシブ ===== */
+    /* ===== スマホ対応 ===== */
 
     @media (max-width: 900px){
 
-      .top-layout{
-
-        flex-direction:column;
+      .big-result{
+        font-size:48px;
       }
 
-      .latest-big{
-
+      .scan-overlay{
         font-size:48px;
       }
     }
@@ -337,7 +305,7 @@
       <div class="school-info">
 
         <div class="school-name">
-          千葉県立東総工業高等学校
+          千葉県立東総工業高等学校1
         </div>
 
         <div class="system-name">
@@ -354,56 +322,38 @@
 
   <div class="container">
 
-    <div class="top-layout">
+    <!-- スキャン -->
 
-      <!-- スキャン -->
+    <div class="card">
 
-      <div class="card scan-card">
+      <div class="section-title">
+        バーコード読み取り
+      </div>
 
-        <div class="section-title">
-          バーコード読み取り
-        </div>
+      <button id="startButton">
+        スキャン開始
+      </button>
 
-        <button id="startButton">
-          スキャン開始
-        </button>
+      <br><br>
 
-        <br><br>
+      <div class="video-wrap">
 
-        <div class="video-wrap">
+        <video
+          id="video"
+          autoplay
+          playsinline
+          muted>
+        </video>
 
-          <video
-            id="video"
-            autoplay
-            playsinline
-            muted>
-          </video>
-
-          <div id="scanOverlay" class="scan-overlay">
-            ---
-          </div>
-
-        </div>
-
-        <div class="status">
-          <span class="status-dot"></span>
-          カメラ待機中
+        <div id="scanOverlay" class="scan-overlay">
+          ---
         </div>
 
       </div>
 
-      <!-- 最新読み取り -->
-
-      <div class="card latest-card">
-
-        <div class="section-title">
-          最新の読み取り値
-        </div>
-
-        <div id="latestResult" class="latest-big">
-          ---
-        </div>
-
+      <div class="status">
+        <span class="status-dot"></span>
+        カメラ待機中
       </div>
 
     </div>
@@ -414,6 +364,10 @@
 
       <div class="section-title">
         読み取り履歴
+      </div>
+
+      <div id="latestResult" class="big-result">
+        ---
       </div>
 
       <ul id="resultList"></ul>
@@ -500,6 +454,13 @@
     // ===== 結果追加 =====
 
     function addResult(text){
+
+      // 下の超デカ表示
+
+      document
+        .getElementById("latestResult")
+        .textContent = text;
+
       // カメラ中央表示
 
       const overlay =

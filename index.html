@@ -212,7 +212,31 @@
       font-weight:bold;
       color:#7b1e3a;
     }
+    
+ /* ===== 全画面表示 ===== */
+    .big-result{
 
+  background:#7b1e3a;
+
+  color:#FFFDF1;
+
+  font-size:72px;
+
+  font-weight:bold;
+
+  text-align:center;
+
+  padding:30px;
+
+  border-radius:24px;
+
+  margin-bottom:24px;
+
+  letter-spacing:3px;
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.15);
+}
   </style>
 </head>
 
@@ -231,7 +255,7 @@
       <div class="school-info">
 
         <div class="school-name">
-          千葉県立東総工業高等学校
+          千葉県立東総工業高等学校2
         </div>
 
         <div class="system-name">
@@ -282,20 +306,22 @@
 
     <div class="card">
 
-      <div class="section-title">
-        読み取り履歴
-      </div>
-
-      <ul id="resultList"></ul>
-
-      <div class="count-box">
-        読み取り件数：
-        <span id="count">0</span>
-      </div>
-
-    </div>
-
+  <div class="section-title">
+    読み取り履歴
   </div>
+
+  <div id="latestResult" class="big-result">
+    ---
+  </div>
+
+  <ul id="resultList"></ul>
+
+  <div class="count-box">
+    読み取り件数：
+    <span id="count">0</span>
+  </div>
+
+</div>
 
   <!-- hidden -->
 
@@ -371,18 +397,22 @@
 
     function addResult(text){
 
-      const li =
-        document.createElement("li");
+  document
+    .getElementById("latestResult")
+    .textContent = text;
 
-      li.innerHTML = `
-        <div class="barcode">
-          ${text}
-        </div>
+  const li =
+    document.createElement("li");
 
-        <div class="time">
-          ${getNowTime()}
-        </div>
-      `;
+  li.innerHTML = `
+    <div class="barcode">
+      ${text}
+    </div>
+
+    <div class="time">
+      ${getNowTime()}
+    </div>
+  `;
 
       document
         .getElementById("resultList")
